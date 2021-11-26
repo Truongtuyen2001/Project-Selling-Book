@@ -48,8 +48,8 @@ export const checkMail = (req, res, next) => {
 }
 // Register
 export const register = (req, res) => {
-    const { name, email, image, password, phone, birth } = req.body;
-    if (!name || !email || !image || !password || !phone || !birth) {
+    const { name, email, password, phone } = req.body;
+    if (!name || !email || !password || !phone ) {
         return res.status(400).json({
             status: false,
             error: "Bạn cần nhập đầy đủ thông tin"
@@ -76,7 +76,7 @@ export const register = (req, res) => {
 export const signin = (req, res) => {
     const { _email, _password } = req.body;
 
-    if (_email && _password) {
+    if ( _email && _password ) {
         User.findOne({ email: _email }, (error, user) => {
             if (error || !user) {
                 return res.status(400).json({

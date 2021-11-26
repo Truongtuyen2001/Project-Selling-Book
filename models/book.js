@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-// const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 const bookSchema = mongoose.Schema({
-    bookName: {
+    name: {
         type: String,
         strim: true,
         required: true,
@@ -12,7 +12,11 @@ const bookSchema = mongoose.Schema({
         required: true,
         maxLength: 30,
     },
-    avatar: {
+    cateId: {
+        type: ObjectId,
+        ref: "Categories",
+    },
+    image: {
         type: String,
         required: true
     },

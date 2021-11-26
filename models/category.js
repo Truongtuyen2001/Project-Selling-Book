@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const cateSchema = mongoose.Schema({
-    cateName : {
+    name: {
         type : String,
         strim : true,
         maxLength : 100,

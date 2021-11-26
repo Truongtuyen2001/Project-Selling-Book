@@ -3,7 +3,7 @@ import { register, signin, signout, Validate, userValidationResult, checkMail } 
 const router = express.Router();
 
 router.post('/register', Validate, userValidationResult, checkMail, register);
-router.get('/signin', signin);
+router.post('/signin', signin);
 router.get('/signout', signout)
 
 module.exports = router;

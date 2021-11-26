@@ -9,13 +9,20 @@ import bookRouters from './routers/book';
 import cateRouters from './routers/category';
 import authRouters from './routers/auth';
 import userRouters from './routers/user'
+
 //config
+
 const app= express();
 dotenv.config();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
 
+//middleware
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+    res.render('index'); 
+})
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
