@@ -16,6 +16,7 @@ export const userValidationResult = (req, res, next) => {
     }
     next();
 }
+
 //validate kí tự 
 export const Validate = [
     check('name').trim().not().isEmpty().withMessage("Name is required").isLength({ min: 3, max: 30 })
@@ -25,9 +26,9 @@ export const Validate = [
         .matches('^[A-Za-z0-9]{6,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$')
         .withMessage("Email không đúng định dạng. Email chứa kí tự chữ cái và số !!"),
 
-    // check('phone').trim().not().isEmpty().withMessage("Phone is required")
-    //     .matches('/((09|03|07|08|05)+([0-9]{8})\b)/g')
-    //     .withMessage("Số điện thoại không đúng định dạng hoặc không đúng đầu số của VN !!"),
+    check('phone').trim().not().isEmpty().withMessage("Phone is required")
+        .matches('^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$')
+        .withMessage("Số điện thoại không đúng định dạng hoặc không đúng đầu số của VN !!"),
 
     check('password').trim().not().isEmpty().withMessage('Password is required').isLength({ min: 8 })
         .withMessage('Mật khẩu phải nhập dài ít nhất 8 ký tự !')
@@ -35,7 +36,7 @@ export const Validate = [
 
 //check mail tồn tại
 export const checkMail = (req, res, next) => {
-    const email = req.body;
+    const email= req.body;
     User.findOne(email).exec((err, data) => {
         if (err || data) {
             return res.status(400).json({
@@ -46,6 +47,10 @@ export const checkMail = (req, res, next) => {
         next();
     })
 }
+
+//check phone 
+
+
 // Register
 export const register = (req, res) => {
     const { name, email, password, phone } = req.body;
@@ -62,15 +67,10 @@ export const register = (req, res) => {
                     error: "Không thể đăng kí tài khoản",
                 })
             }
-            return res.status(200).json({
-                status: true,
-                message: "Đăng kí tài khoản thành công",
-                user
-            })
+            return res.status(200).json(user)
         })
     }
 }
-
 
 // Signin
 export const signin = (req, res) => {

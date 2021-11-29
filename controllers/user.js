@@ -1,6 +1,5 @@
 import User from "../models/user";
 
-
 // Lấy id chung
 export const userById = (req, res, next, id) => {
     User.findById(id).exec((error, data) => {
