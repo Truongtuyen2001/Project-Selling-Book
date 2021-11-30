@@ -9,8 +9,9 @@ import bookRouters from './routers/book';
 import cateRouters from './routers/category';
 import authRouters from './routers/auth';
 import userRouters from './routers/user'
-import orderRouter from './routers/order';;
+import orderRouter from './routers/order';
 import cartRouters from './routers/cart'; 
+import mailRouters from './routers/mail';
 //config
 
 const app= express();
@@ -38,8 +39,9 @@ app.use('/api', bookRouters);
 app.use('/api', cateRouters);
 app.use('/api', authRouters);
 app.use('/api', userRouters);
-// app.use('/api', orderRourers);
+app.use('/api', orderRouter);
 app.use('/api', cartRouters);
+app.use('/api', mailRouters);
 
 const port = process.env.PORT || 8080
 

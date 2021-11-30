@@ -48,9 +48,6 @@ export const checkMail = (req, res, next) => {
     })
 }
 
-//check phone 
-
-
 // Register
 export const register = (req, res) => {
     const { name, email, password, phone } = req.body;
@@ -75,7 +72,6 @@ export const register = (req, res) => {
 // Signin
 export const signin = (req, res) => {
     const { _email, _password } = req.body;
-
     if ( _email && _password ) {
         User.findOne({ email: _email }, (error, user) => {
             if (error || !user) {
@@ -134,6 +130,7 @@ export const requireSignin = expressJwt({
     userProperty: 'auth'
 })
 
+
 //kiểm tả xem có phải là người dùng của trang web
 export const isAuth = (req, res, next) => {
     //start kiểm tra _id ở payload token có trùng với _id trong req.profile
@@ -146,7 +143,7 @@ export const isAuth = (req, res, next) => {
     next();
 };
 
-// kiểm tra xem có phải admin (role == 0)
+// kiểm tra xem có phải admin quyền It (role == 0)
 export const isAdmin = (req, res, next) => {
     if(req.auth.role != 0 ) {
         return res.status(400).json({
@@ -154,6 +151,23 @@ export const isAdmin = (req, res, next) => {
         });
     }
     next();
+}
+//kiểm tra xem có phải là Staff (role == 2)
+export const isStaff = (req, res, next) => {
+    if(req.auth.role == 2 ) {
+        return res.status(200).json({
+            message : 'Bạn là nhân viên'
+        })
+    }
+    next();
+}
+//kiểm tra manager
+export const isManager = (req, res, next) => {
+    if(req.auth.role == 3) {
+        return res.status(200).json({
+            message : "Bạn là giám đốc"
+        })
+    }
 }
 
 //kiểm tra có phải là admin trong router products
