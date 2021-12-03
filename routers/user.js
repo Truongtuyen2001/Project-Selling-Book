@@ -1,5 +1,5 @@
 import express from 'express';
-import { requireSignin, isAdmin, isManager, isAuth, checkAdmin } from '../controllers/auth';
+import { requireSignin, isAdmin, isManager, isAuth, checkAdmin, isStaff } from '../controllers/auth';
 import { showListUser, userById, detailUser, editUser, removeUser } from '../controllers/user';
 const UsersRouter = express.Router();
 
@@ -9,10 +9,10 @@ UsersRouter.get('/secret/:UserId', requireSignin, (req, res) => {
     })
 })
 
-UsersRouter.get('/users', requireSignin, isAdmin, isManager, showListUser);
-UsersRouter.get('/users/:UserId', requireSignin, isManager, detailUser);
-UsersRouter.patch('/users/:UserId', requireSignin, isManager, editUser);
+UsersRouter.get('/users', requireSignin, isAdmin, showListUser);
+UsersRouter.get('/users/:UserId', requireSignin, detailUser);
+UsersRouter.patch('/users/:UserId', requireSignin, editUser);
 UsersRouter.param('UserId', userById);
-UsersRouter.delete('/users/:UserId', requireSignin, isAdmin, isManager, removeUser);
+UsersRouter.delete('/users/:UserId', requireSignin, isAdmin, removeUser);
 
 module.exports = UsersRouter;

@@ -76,3 +76,18 @@ export const removeBook = (req, res) => {
         return res.json(book)
     })
 }
+
+export const listRelated = (req, res) => {
+    Book.find({
+        _id : {$ne: req.book},
+        cateId: req.book.cateId,
+    }).populate('category', "_id name")
+    .exec((err, book) => {
+        if(err) {
+            res.status(400).json({
+                error : "Product not found",
+            })
+        }
+        res.json(book)
+    })
+}

@@ -29,14 +29,14 @@ export const Validate = [
     check('phone').trim().not().isEmpty().withMessage("Phone is required")
         .matches('^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$')
         .withMessage("Số điện thoại không đúng định dạng hoặc không đúng đầu số của VN !!"),
-
+    // check('address').trim().not().isEmpty().withMessage("Address is required"),
     check('password').trim().not().isEmpty().withMessage('Password is required').isLength({ min: 8 })
         .withMessage('Mật khẩu phải nhập dài ít nhất 8 ký tự !')
 ]
 
 //check mail tồn tại
 export const checkMail = (req, res, next) => {
-    const email= req.body;
+    const email = req.body;
     User.findOne(email).exec((err, data) => {
         if (err || data) {
             return res.status(400).json({
@@ -51,7 +51,7 @@ export const checkMail = (req, res, next) => {
 // Register
 export const register = (req, res) => {
     const { name, email, password, phone } = req.body;
-    if (!name || !email || !password || !phone ) {
+    if (!name || !email || !password || !phone) {
         return res.status(400).json({
             status: false,
             error: "Bạn cần nhập đầy đủ thông tin"
@@ -72,7 +72,7 @@ export const register = (req, res) => {
 // Signin
 export const signin = (req, res) => {
     const { _email, _password } = req.body;
-    if ( _email && _password ) {
+    if (_email && _password) {
         User.findOne({ email: _email }, (error, user) => {
             if (error || !user) {
                 return res.status(400).json({
@@ -143,38 +143,22 @@ export const isAuth = (req, res, next) => {
     next();
 };
 
-// kiểm tra xem có phải admin quyền It (role == 0)
+// kiểm tra xem có phải admin quyền It (role == 0) và giám đốc (role == 2)
 export const isAdmin = (req, res, next) => {
-    if(req.auth.role != 0 ) {
+    if (req.auth.role != "0" && req.auth.role != "2") {
         return res.status(400).json({
-            error : "Bạn không phải admin. Vui lòng trở lại trang chủ "
+            err: 'failed'
         });
     }
     next();
 }
-//kiểm tra xem có phải là Staff (role == 2)
-export const isStaff = (req, res, next) => {
-    if(req.auth.role == 2 ) {
-        return res.status(200).json({
-            message : 'Bạn là nhân viên'
-        })
-    }
-    next();
-}
-//kiểm tra manager
-export const isManager = (req, res, next) => {
-    if(req.auth.role == 3) {
-        return res.status(200).json({
-            message : "Bạn là giám đốc"
-        })
-    }
-}
+
 
 //kiểm tra có phải là admin trong router products
 export const checkAdmin = (req, res, next) => {
-    if (req.auth.role != 0 ) {
+    if (req.auth.role != 0) {
         return res.status(403).json({
-            err : "Bạn không phải admin. Vui lòng trở lại trang chủ "
+            err: "Bạn không phải admin. Vui lòng trở lại trang chủ"
         })
     }
     next();

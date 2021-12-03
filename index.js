@@ -8,13 +8,14 @@ import cors from 'cors';
 import bookRouters from './routers/book';
 import cateRouters from './routers/category';
 import authRouters from './routers/auth';
-import userRouters from './routers/user'
+import userRouters from './routers/user';
 import orderRouter from './routers/order';
-import cartRouters from './routers/cart'; 
+import cartRouters from './routers/cart';
 import mailRouters from './routers/mail';
+
 //config
 
-const app= express();
+const app = express();
 dotenv.config();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -23,8 +24,13 @@ app.use(cors());
 //middleware
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
-    res.render('index'); 
+    res.render('index');
 })
+
+app.use(cors({
+    origin: '*',
+    credentials: true
+}))
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -48,3 +54,4 @@ const port = process.env.PORT || 8080
 app.listen(port, () => {
     console.log(`Server is running on port : ${port}`);
 })
+

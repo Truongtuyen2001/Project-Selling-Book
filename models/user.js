@@ -16,9 +16,6 @@ const User = new Schema(
             required: true,
             unique: 32,
         },
-        // image: {
-        //     type: String,
-        // },
         hashed_password: {
             type: String,
             required: true
@@ -33,10 +30,6 @@ const User = new Schema(
         phone: {
             type: Number,
         },
-        // birth: {
-        //     type: String,
-        //     required: true
-        // },
         role: {
             type: String,
             default: 1
@@ -45,10 +38,10 @@ const User = new Schema(
             type: Array,
             default: []
         },
-        products: {
-            type: Array,
-            default: []
-        },
+        // products: {
+        //     type: Array,
+        //     default: []
+        // },
     },
     { timestamps: true }
 );
