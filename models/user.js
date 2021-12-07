@@ -25,7 +25,7 @@ const User = new Schema(
             trim: true
         },
         salt: {
-            type: String
+            type: String    
         },
         phone: {
             type: Number,

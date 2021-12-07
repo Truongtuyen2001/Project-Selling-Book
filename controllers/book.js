@@ -23,22 +23,29 @@ export const addBook = (req, res) => {
     }
 }
 
-export const listBook = (req, res) => {
-    Book.find((err, book) => {
-        if (err || !book) {
-            return res.status(400).json({
-                err: "Không thể hiển thị được danh sách"
-            })
-        }
-        return res.json(book)
-    })
+// export const listBook = (req, res) => {
+//     Book.find((err, book) => {
+//         if (err || !book) {
+//             return res.status(400).json({
+//                 err: "Không thể hiển thị được danh sách"
+//             })
+//         }
+//         return res.json(book)
+//     })
+// }
+
+export const listBook = async (req, res) => {
+    const products = await Book.find({})
+        .populate('cateId')
+        .sort({ createAt: -1 }).exec();
+    res.json(products);
 }
-    
-export const bookById = (req, res, next , id) => {
+
+export const bookById = (req, res, next, id) => {
     Book.findById(id).exec((err, book) => {
-        if(err) {
+        if (err) {
             res.status(400).json({
-                err : "Không tìm thấy sách"
+                err: "Không tìm thấy sách"
             })
         }
         req.book = book;
@@ -55,9 +62,9 @@ export const updateBook = (req, res) => {
     book = _.assignIn(book, req.body);
 
     book.save((err, book) => {
-        if(err) {
+        if (err) {
             return res.status(401).json({
-                err : "Error !!"
+                err: "Error !!"
             })
         }
         return res.json(book)
@@ -67,27 +74,48 @@ export const updateBook = (req, res) => {
 export const removeBook = (req, res) => {
     let book = req.book;
     book.remove((err, book) => {
-        if(err) {
+        if (err) {
             return res.status(400).json({
                 status: false,
-                err : "Không thể xoá được sản phẩm"
+                err: "Không thể xoá được sản phẩm"
             });
         };
         return res.json(book)
     })
 }
 
+
+
+// sản phẩm liên quan
 export const listRelated = (req, res) => {
     Book.find({
-        _id : {$ne: req.book},
-        cateId: req.book.cateId,
-    }).populate('category', "_id name")
-    .exec((err, book) => {
-        if(err) {
-            res.status(400).json({
-                error : "Product not found",
+        _id: { $ne: req.product },
+        category_id: req.product.category_id._id,
+    }).limit(4).populate('category_id', '_id name').exec((err, data) => {
+        if (err) {
+            return res.status(400).json({
+                status: false,
+                error: "Không tìm thấy sản phẩm nào"
             })
         }
-        res.json(book)
+        res.status(200).json(data)
     })
 }
+
+// tìm kiếm sản phẩm
+export const searchProduct = (req, res) => {
+    
+    const searchProduct = req.query.name;
+    Book.find({ name: { $regex: searchProduct, $options: "i" } }).exec((err, book) => {
+        if (err || !book) {
+            return res.status(400).json({
+                success: false,
+                message: "Lỗi vcl",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            book
+        });
+    });
+};

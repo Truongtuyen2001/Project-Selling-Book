@@ -71,8 +71,8 @@ export const register = (req, res) => {
 
 // Signin
 export const signin = (req, res) => {
-    const { _email, _password } = req.body;
-    if (_email && _password) {
+    const { _email, _password, _phone } = req.body;
+    if (_email && _password && _phone) {
         User.findOne({ email: _email }, (error, user) => {
             if (error || !user) {
                 return res.status(400).json({
@@ -87,9 +87,9 @@ export const signin = (req, res) => {
 
             const token = jwt.sign({ _id: user.id, role: user.role }, process.env.JWT_SECRET);
             res.cookie('tokenAccess', token, { expire: new Data() + 9999 });
-            const { _id, name, email, role } = user;
+            const { _id, name, email, role, phone } = user;
             return res.json({
-                token, id: _id, name: name, email: email, role: role
+                token, id: _id, name: name, email: email,phone: phone, role: role
             });
         });
     } else {
@@ -106,10 +106,10 @@ export const signin = (req, res) => {
                 });
             }
             const token = jwt.sign({ _id: user._id, role: user.role }, process.env.JWT_SECRET);
-            const { _id, name, email, role, products } = user;
+            const { _id, name, email,phone, role, products } = user;
             return res.json({
                 token,
-                user: { _id, email, name, role, products }
+                user: { _id, email, name, phone, role, products }
             });
         });
     }
