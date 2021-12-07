@@ -4,8 +4,8 @@ import { fromidable } from 'formidable';
 import fs from 'fs';
 
 export const addBook = (req, res) => {
-    const { name, price, image, description, status, author } = req.body;
-    if (!name || !price || !image || !description || !status || !author) {
+    const { name, price, image, description, status, author, discount } = req.body;
+    if (!name || !price || !image || !description || !status || !author || !discount  ) {
         return res.status(401).json({
             status: false,
             error: "Bạn cần nhập đầy đủ thông tin sách !!"
@@ -84,14 +84,12 @@ export const removeBook = (req, res) => {
     })
 }
 
-
-
 // sản phẩm liên quan
 export const listRelated = (req, res) => {
     Book.find({
         _id: { $ne: req.product },
         category_id: req.product.category_id._id,
-    }).limit(4).populate('category_id', '_id name').exec((err, data) => {
+    }).limit(4).populate('cateId', '_id name').exec((err, data) => {
         if (err) {
             return res.status(400).json({
                 status: false,
@@ -102,9 +100,8 @@ export const listRelated = (req, res) => {
     })
 }
 
-// tìm kiếm sản phẩm
+// tìm kiếm sản phẩm theo name
 export const searchProduct = (req, res) => {
-    
     const searchProduct = req.query.name;
     Book.find({ name: { $regex: searchProduct, $options: "i" } }).exec((err, book) => {
         if (err || !book) {
@@ -113,9 +110,7 @@ export const searchProduct = (req, res) => {
                 message: "Lỗi vcl",
             });
         }
-        return res.status(200).json({
-            success: true,
-            book
-        });
+        return res.status(200).json(book);
     });
 };
+

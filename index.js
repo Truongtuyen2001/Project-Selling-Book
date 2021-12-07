@@ -12,6 +12,7 @@ import userRouters from './routers/user';
 import orderRouter from './routers/order';
 import cartRouters from './routers/cart';
 import mailRouters from './routers/mail';
+import couponCodeDiscount from './routers/CouponCodes';
 
 //config
 
@@ -48,6 +49,7 @@ app.use('/api', userRouters);
 app.use('/api', orderRouter);
 app.use('/api', cartRouters);
 app.use('/api', mailRouters);
+app.use('/api', couponCodeDiscount)
 
 const port = process.env.PORT || 8080
 

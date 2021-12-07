@@ -27,6 +27,10 @@ const oderSchema = mongoose.Schema({
         type: String,
         trim: true,
         required: true
+    },
+    totalPrice: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true})
 

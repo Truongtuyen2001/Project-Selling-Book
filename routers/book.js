@@ -17,7 +17,7 @@ router.delete('/book/remove/:id', removeBook);
 //lấy sản phẩm theo danh mục
 router.get('/book/related/:id',listRelated);
 //tìm kiếm sản phẩm
-router.get("/product/search", searchProduct)
+router.post("/product/search/:name", searchProduct)
 //lấy id của sách
 router.param('id', bookById);
 //lấy id của user

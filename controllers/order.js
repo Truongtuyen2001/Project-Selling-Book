@@ -1,10 +1,11 @@
 import Order from '../models/order';
 import formidable from 'formidable';
+import express, { response } from 'express';
 
 export const orderById = (req, res, next, id) => {
     Order.findbyId(id).exec((err, order) => {
         if(err || !data) {
-            return res.status(400).json({
+            return response.status(400).json({
                 status: false,
                 error : "Không có order"
             })
@@ -15,16 +16,15 @@ export const orderById = (req, res, next, id) => {
 }
 
 export const addOrder = (req, res) => {
-    let order = new Order(req.body);
-    order.save((err, order) => {
-        if(err) {
-            return res.status(401).json({
-                status :false,
-                err: "Không thêm được order"
+    const order = new Order(req.body);
+    order.save((err, data) => {
+        if(err || !data) {
+            return res.status(400).json({
+                error : " Không thể mua hàng"
             })
         }
-        return res.status(200).json(order);
-    })
+        return res.json(data)
+    })   
 }
 
 export const listOrder = (req, res) => {

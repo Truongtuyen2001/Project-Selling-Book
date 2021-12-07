@@ -31,6 +31,9 @@ const bookSchema = mongoose.Schema({
     author: {
         type: String,
         required: true
+    },
+    discount: {
+        type: Number
     }
 }, { timestamps: true } 
 
