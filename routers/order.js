@@ -8,7 +8,7 @@ orderRouter.post('/addOrder', addOrder);
 
 orderRouter.get('/listOrder', listOrder);
 
-orderRouter.patch('/detailOrder/:orderId', detailOrder);
+orderRouter.get('/detailOrder/:orderId', detailOrder);
 
 orderRouter.delete('/removeOrder/:orderId', removeOrder);
 

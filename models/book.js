@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Schema;
-const bookSchema = mongoose.Schema({
+const mongoosePaginate = require("mongoose-paginate-v2")
+const Book = mongoose.Schema({
     name: {
         type: String,
         strim: true,
@@ -33,10 +34,19 @@ const bookSchema = mongoose.Schema({
         required: true
     },
     discount: {
-        type: Number
+        type: Number,
+        default: 0
+    },
+    quantity: {
+        type: Number,
+    },
+    likes: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true } 
 
-)
-module.exports = mongoose.model("Book",bookSchema)
+);
+Book.plugin(mongoosePaginate);
+module.exports = mongoose.model("Book",Book)
 

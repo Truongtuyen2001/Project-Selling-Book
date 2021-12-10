@@ -38,10 +38,6 @@ const User = new Schema(
             type: Array,
             default: []
         },
-        // products: {
-        //     type: Array,
-        //     default: []
-        // },
     },
     { timestamps: true }
 );

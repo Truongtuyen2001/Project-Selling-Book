@@ -15,10 +15,6 @@ let cartSchema = new mongoose.Schema({
         required : true,
         minlength: 1
     },
-    // price: {
-    //     type: Number,
-    //     reuqired: true
-    // }
 },{timestamps: true});
 
 module.exports = mongoose.model('Cart', cartSchema);

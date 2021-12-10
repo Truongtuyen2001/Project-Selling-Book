@@ -1,11 +1,11 @@
 import Book from "../models/book";
-import _ from "lodash";
+import _ , { parseInt } from "lodash";
 import { fromidable } from 'formidable';
-import fs from 'fs';
+import fs, { copyFileSync } from 'fs';
 
 export const addBook = (req, res) => {
-    const { name, price, image, description, status, author, discount } = req.body;
-    if (!name || !price || !image || !description || !status || !author || !discount  ) {
+    const { name, price, image, description, status, author, discount, quantity } = req.body;
+    if (!name || !price || !image || !description || !status || !author || !discount || !quantity) {
         return res.status(401).json({
             status: false,
             error: "Bạn cần nhập đầy đủ thông tin sách !!"
@@ -23,22 +23,57 @@ export const addBook = (req, res) => {
     }
 }
 
-// export const listBook = (req, res) => {
-//     Book.find((err, book) => {
-//         if (err || !book) {
-//             return res.status(400).json({
-//                 err: "Không thể hiển thị được danh sách"
-//             })
-//         }
-//         return res.json(book)
-//     })
+// export const listBook = async (req, res) => {
+//     const products = await Book.find({})
+//         .populate('cateId')
+//         .sort({ createAt: -1 }).exec();
+//     res.json(products);
 // }
 
 export const listBook = async (req, res) => {
-    const products = await Book.find({})
-        .populate('cateId')
-        .sort({ createAt: -1 }).exec();
-    res.json(products);
+    const sortBy = {};
+    const { page, limit, sort } = req.query;
+    if (page && limit) {
+        const myCustomTables = {
+            totalDocs: "itemCount",
+            docs: "books",
+            limit: "perPage",
+            page: "currentPage",
+            nextPage: "next",
+            prevPage: "prev",
+            totalPages: "pageCount",
+            pagingCounter: "slNo",
+            meta: "paginator",
+        };
+        const options = {
+            page: page || 1,
+            limit: limit || 5,
+            customLabels: myCustomTables,
+            collation: {
+                locale: 'en',
+            },
+        };
+        Book.paginate({}, options, function (err, db) {
+            if (err) throw err;
+            else res.json(db.books);
+            console.log(`page: ${page}, limit: ${limit}`);
+        });
+
+    } else if (limit) {
+        const books = await Book.find({}).limit(parseInt(limit));
+        console.log(`page : ${limit}`);
+        res.json(books);
+    } else if (sort) {
+        const str = req.query.sort.split(":");
+        sortBy[str[0]] = str[1] === "desc" ? -1 : 1;
+        const books = await Book.find({}).sort(sort);
+        res.json(books);
+    } else {
+        const products = await Book.find({})
+            .populate('cateId')
+            .sort({ createAt: -1 }).exec();
+        res.json(products);
+    }
 }
 
 export const bookById = (req, res, next, id) => {
@@ -113,4 +148,5 @@ export const searchProduct = (req, res) => {
         return res.status(200).json(book);
     });
 };
+
 
