@@ -23,13 +23,6 @@ export const addBook = (req, res) => {
     }
 }
 
-// export const listBook = async (req, res) => {
-//     const products = await Book.find({})
-//         .populate('cateId')
-//         .sort({ createAt: -1 }).exec();
-//     res.json(products);
-// }
-
 export const listBook = async (req, res) => {
     const sortBy = {};
     const { page, limit, sort } = req.query;
@@ -45,6 +38,7 @@ export const listBook = async (req, res) => {
             pagingCounter: "slNo",
             meta: "paginator",
         };
+
         const options = {
             page: page || 1,
             limit: limit || 5,
@@ -53,6 +47,7 @@ export const listBook = async (req, res) => {
                 locale: 'en',
             },
         };
+
         Book.paginate({}, options, function (err, db) {
             if (err) throw err;
             else res.json(db.books);
@@ -63,11 +58,13 @@ export const listBook = async (req, res) => {
         const books = await Book.find({}).limit(parseInt(limit));
         console.log(`page : ${limit}`);
         res.json(books);
+
     } else if (sort) {
         const str = req.query.sort.split(":");
         sortBy[str[0]] = str[1] === "desc" ? -1 : 1;
         const books = await Book.find({}).sort(sort);
         res.json(books);
+
     } else {
         const products = await Book.find({})
             .populate('cateId')

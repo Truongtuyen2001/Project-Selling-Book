@@ -15,5 +15,4 @@ wishRouter.param('idWishList', wishById);
 wishRouter.delete('/deleteWishList/:idWishList', removeWishList);
 
 
-
 module.exports = wishRouter;

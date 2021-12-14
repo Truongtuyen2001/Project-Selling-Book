@@ -35,6 +35,9 @@ const oderSchema = mongoose.Schema({
     status: {
         type: String,
         default: 0
+    },
+    payment: {
+        type: String
     }
 }, {timestamps: true})
 

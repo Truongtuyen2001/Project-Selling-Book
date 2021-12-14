@@ -58,33 +58,6 @@ export const removeOrder = (req, res) => {
 }
 
 export const updateOrder = (req, res) => {
-    
-    // let form = formidable.IncomingForm();
-    // form.keepExtensions = true;
-    // form.parse(req, (err, fildes, files) => {
-    //     if(err) {
-    //         res.status(400).json({
-    //             error : "Error"
-    //         })
-    //     }
-
-    // const { productId, userId, address, nameKh, phone, totalMoney } = req.body;
-    // if(!nameKh || !phone || !totalMoney || !address || !productId || userId ) {
-    //     return res.status(400).json({
-    //         error : "Cần nhập đầy đủ thông tin các trường"
-    //     })
-    // }
-
-    // let order = req.order
-    // order.save((err, data) => {
-    //     if (err) {
-    //         return res.status(400).json({
-    //             status: false,
-    //             error: "Error"
-    //         })
-    //     }
-    //     res.json(data)
-    // })
 
     let order = req.order
     order = _.assignIn(order, req.body);
