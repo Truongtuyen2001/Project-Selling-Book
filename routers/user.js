@@ -9,7 +9,7 @@ UsersRouter.get('/secret/:UserId', requireSignin, (req, res) => {
     })
 })
 
-UsersRouter.get('/users/list', showListUser);
+UsersRouter.get('/users', requireSignin, showListUser);
 UsersRouter.get('/users/:UserId', requireSignin, detailUser);
 UsersRouter.patch('/users/:UserId', requireSignin, editUser);
 UsersRouter.param('UserId', userById);

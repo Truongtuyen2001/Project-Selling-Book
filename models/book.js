@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Schema;
 const mongoosePaginate = require("mongoose-paginate-v2")
-const Book = mongoose.Schema({
+const bookSchema = mongoose.Schema({
     name: {
         type: String,
         strim: true,
@@ -40,13 +40,27 @@ const Book = mongoose.Schema({
     quantity: {
         type: Number,
     },
-    likes: {
-        type: Number,
-        default: 0
-    }
-}, { timestamps: true } 
+    // likes: {
+    //     type: Number,
+    //     default: 0
+    // }
+}, { timestamps: true });
 
-);
-Book.plugin(mongoosePaginate);
-module.exports = mongoose.model("Book",Book)
 
+
+// Book.plugin(mongoosePaginate);
+const Book = mongoose.model("Book", bookSchema);
+module.exports = Book
+
+for (let i = 0; i <= 50; i++) {
+    Book.create({
+        name: "Trương Tuyển" + i,
+        price: 2000,
+        image: "ok" + i,
+        description: "Ok" + i,
+        status: "OK",
+        author: "Ngô thừa ân",
+        discount: 20,
+        quantity: 4
+    })
+}

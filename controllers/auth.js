@@ -22,14 +22,13 @@ export const Validate = [
     check('name').trim().not().isEmpty().withMessage("Name is required").isLength({ min: 3, max: 30 })
         .withMessage("Tên phải dài từ 3 đến 30 kí tự !"),
 
-    check('email').trim().not().isEmpty().withMessage("Email is required")
-        .matches('^[A-Za-z0-9]{6,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$')
-        .withMessage("Email không đúng định dạng. Email chứa kí tự chữ cái và số !!"),
-
+    // check('email').trim().not().isEmpty().withMessage("Email is required")
+    //     .matches('^[A-Za-z0-9]{6,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$')
+    //     .withMessage("Email không đúng định dạng. Email chứa kí tự chữ cái và số !!"),
     check('phone').trim().not().isEmpty().withMessage("Phone is required")
         .matches('^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$')
         .withMessage("Số điện thoại không đúng định dạng hoặc không đúng đầu số của VN !!"),
-    // check('address').trim().not().isEmpty().withMessage("Address is required"),
+
     check('password').trim().not().isEmpty().withMessage('Password is required').isLength({ min: 8 })
         .withMessage('Mật khẩu phải nhập dài ít nhất 8 ký tự !')
 ]
@@ -152,7 +151,6 @@ export const isAdmin = (req, res, next) => {
     }
     next();
 }
-
 
 //kiểm tra có phải là admin trong router products
 export const checkAdmin = (req, res, next) => {

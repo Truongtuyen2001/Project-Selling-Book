@@ -1,5 +1,5 @@
 import Book from "../models/book";
-import _ , { parseInt } from "lodash";
+import _, { parseInt } from "lodash";
 import { fromidable } from 'formidable';
 import fs, { copyFileSync } from 'fs';
 
@@ -24,54 +24,90 @@ export const addBook = (req, res) => {
 }
 
 export const listBook = async (req, res) => {
-    const sortBy = {};
-    const { page, limit, sort } = req.query;
-    if (page && limit) {
-        const myCustomTables = {
-            totalDocs: "itemCount",
-            docs: "books",
-            limit: "perPage",
-            page: "currentPage",
-            nextPage: "next",
-            prevPage: "prev",
-            totalPages: "pageCount",
-            pagingCounter: "slNo",
-            meta: "paginator",
-        };
 
-        const options = {
-            page: page || 1,
-            limit: limit || 5,
-            customLabels: myCustomTables,
-            collation: {
-                locale: 'en',
-            },
-        };
+    // const sortBy = {};
+    // const { page, limit, sort } = req.query;
+    // if (page && limit) {
+    //     const myCustomTables = {
+    //         totalDocs: "itemCount",
+    //         docs: "books",
+    //         limit: "perPage",
+    //         page: "currentPage",
+    //         nextPage: "next",
+    //         prevPage: "prev",
+    //         totalPages: "pageCount",
+    //         pagingCounter: "slNo",
+    //         meta: "paginator",
+    //     };
+    //     const options = {
+            
+    //         page: page || 1,
+    //         limit: limit || 5,
+    //         customLabels: myCustomTables,
+    //         collation: {
+    //             locale: 'en',
+    //         },
+    //     };
 
-        Book.paginate({}, options, function (err, db) {
-            if (err) throw err;
-            else res.json(db.books);
-            console.log(`page: ${page}, limit: ${limit}`);
-        });
+    //     Book.paginate({}, options, function (err, db) {
+    //         if (err) throw err;
+    //         else res.json(db.books);
+    //         console.log(`page: ${page}, limit: ${limit}`);
+    //     });
+    // } 
+    
 
-    } else if (limit) {
-        const books = await Book.find({}).limit(parseInt(limit));
-        console.log(`page : ${limit}`);
-        res.json(books);
+    let page = req.query. page;
+    const page_size = 5;
+    if(page) {
+        page = parseInt(page);
+        if (page < 1) {
+            page = 1;
+        }
 
-    } else if (sort) {
-        const str = req.query.sort.split(":");
-        sortBy[str[0]] = str[1] === "desc" ? -1 : 1;
-        const books = await Book.find({}).sort(sort);
-        res.json(books);
+        const qtySkip = (page - 1) * page_size;
+        Book.find({})
+            .sort({ _id: -1})
+            .skip(qtySkip)
+            .limit(page_size)
+            .exec((err, listBook) => {
+                if(err) {
+                    return res.status(400).json({
+                        success: false,
+                        error: "Không tìm thấy user nào",
+                    });
+                }
 
+                Book.countDocuments({}).then((total) => {
+                    const totalPage = Math.ceil(total / page_size);
+                    res.status(200).json({
+                        listBook, 
+                        totalPage,
+                        totalBook: total,
+                    })
+                })
+            })
     } else {
-        const products = await Book.find({})
-            .populate('cateId')
+        const products = await Book.find({}).populate('cateId')
             .sort({ createAt: -1 }).exec();
         res.json(products);
     }
 }
+
+// export const totalBook = async (req, res) => {
+//     const total = await Book.find().populate('cateId');
+//     if(!total) {
+//         return res.status(400).json({
+//             status: false,
+//             message: "Không tìm thấy sách"
+//         });
+//     }
+//     res.status(200).json({
+//         status: true,
+//         message: "Lấy danh sách sản phẩm thành công",
+//         total,
+//     });
+// }
 
 export const bookById = (req, res, next, id) => {
     Book.findById(id).exec((err, book) => {
