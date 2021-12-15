@@ -58,7 +58,7 @@ export const listBook = async (req, res) => {
     
 
     let page = req.query. page;
-    const page_size = 5;
+    const page_size = 10;
     if(page) {
         page = parseInt(page);
         if (page < 1) {
@@ -79,14 +79,15 @@ export const listBook = async (req, res) => {
                 }
 
                 Book.countDocuments({}).then((total) => {
-                    const totalPage = Math.ceil(total / page_size);
+                    // const totalPage = Math.ceil(total / page_size);
                     res.status(200).json({
                         listBook, 
-                        totalPage,
+                        // totalPage,
                         totalBook: total,
                     })
                 })
             })
+
     } else {
         const products = await Book.find({}).populate('cateId')
             .sort({ createAt: -1 }).exec();

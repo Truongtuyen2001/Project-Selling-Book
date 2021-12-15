@@ -52,15 +52,15 @@ const bookSchema = mongoose.Schema({
 const Book = mongoose.model("Book", bookSchema);
 module.exports = Book
 
-for (let i = 0; i <= 50; i++) {
-    Book.create({
-        name: "Trương Tuyển" + i,
-        price: 2000,
-        image: "ok" + i,
-        description: "Ok" + i,
-        status: "OK",
-        author: "Ngô thừa ân",
-        discount: 20,
-        quantity: 4
-    })
-}
+// for (let i = 0; i <= 50; i++) {
+//     Book.create({
+//         name: "Trương Tuyển" + i,
+//         price: 2000,
+//         image: "ok" + i,
+//         description: "Ok" + i,
+//         status: "OK",
+//         author: "Ngô thừa ân",
+//         discount: 20,
+//         quantity: 4
+//     })
+// }
