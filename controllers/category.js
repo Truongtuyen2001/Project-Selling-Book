@@ -59,18 +59,7 @@ export const cateDetail = (req, res) => {
 //Delete category
 export const removeCategories = (req, res, next) => {
     let category = req.category;
-    // category.remove((err, data) => {
-    //     if(err || !data) {
-    //         return res.status(401).json({
-    //             error : "Không thể xoá danh mục !!"
-    //         })
-    //     }else {
-    //         return res.status(200).json({
-    //             message : "Xoá thành công danh mục",
-    //             data
-    //         })
-    //     }
-    // })
+
     category.remove((err, category) => {
         if(err) {
             return res.status(401).json({

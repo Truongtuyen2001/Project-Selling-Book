@@ -21,7 +21,6 @@ export const userValidationResult = (req, res, next) => {
 export const Validate = [
     check('name').trim().not().isEmpty().withMessage("Name is required").isLength({ min: 3, max: 30 })
         .withMessage("Tên phải dài từ 3 đến 30 kí tự !"),
-
     // check('email').trim().not().isEmpty().withMessage("Email is required")
     //     .matches('^[A-Za-z0-9]{6,32}@([a-zA-Z0-9]{2,12})(.[a-zA-Z]{2,12})+$')
     //     .withMessage("Email không đúng định dạng. Email chứa kí tự chữ cái và số !!"),
@@ -128,7 +127,6 @@ export const requireSignin = expressJwt({
     algorithms: ['HS256'],
     userProperty: 'auth'
 })
-
 
 //kiểm tả xem có phải là người dùng của trang web
 export const isAuth = (req, res, next) => {

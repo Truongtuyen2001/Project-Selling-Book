@@ -5,10 +5,10 @@ import { userById } from '../controllers/user';
 const router = express.Router();
 
 router.get('/categories', showListCate);
-router.post('/addCategories', requireSignin,isAuth, isAdmin, addCategories);
-router.patch('/categories/:categoryId',requireSignin,isAuth, isAdmin, updateCategories);
+router.post('/addCategories', requireSignin, isAdmin, addCategories);
+router.patch('/categories/:categoryId',requireSignin, isAdmin, updateCategories);
 router.get('/categories/:categoryId', cateDetail);
-router.delete('/categories/:categoryId',requireSignin,isAuth, isAdmin, removeCategories)
+router.delete('/categories/:categoryId',requireSignin, isAdmin, removeCategories)
 
 router.param('userById', userById);
 router.param('categoryId', categoryId);

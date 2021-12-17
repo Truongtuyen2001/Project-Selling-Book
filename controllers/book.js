@@ -24,7 +24,6 @@ export const addBook = (req, res) => {
 }
 
 export const listBook = async (req, res) => {
-
     // const sortBy = {};
     // const { page, limit, sort } = req.query;
     // if (page && limit) {
@@ -40,7 +39,7 @@ export const listBook = async (req, res) => {
     //         meta: "paginator",
     //     };
     //     const options = {
-            
+
     //         page: page || 1,
     //         limit: limit || 5,
     //         customLabels: myCustomTables,
@@ -55,60 +54,48 @@ export const listBook = async (req, res) => {
     //         console.log(`page: ${page}, limit: ${limit}`);
     //     });
     // } 
-    
 
-    let page = req.query. page;
-    const page_size = 10;
-    if(page) {
+    let page = req.query.page;
+    const page_size = 12;
+
+    // const products = await Book.find({}).populate('cateId')
+    //     .sort({ createAt: -1 }).exec();
+    // res.json(products);
+    
+    if (page) {
         page = parseInt(page);
         if (page < 1) {
             page = 1;
         }
-
         const qtySkip = (page - 1) * page_size;
-        Book.find({})
-            .sort({ _id: -1})
+        Book.find({}).populate('cateId')
+            .sort({ createAt: -1 })
             .skip(qtySkip)
             .limit(page_size)
             .exec((err, listBook) => {
-                if(err) {
+                if (err) {
                     return res.status(400).json({
                         success: false,
-                        error: "Không tìm thấy user nào",
+                        error: "Không tìm thấy quyển sách nào",
                     });
                 }
 
                 Book.countDocuments({}).then((total) => {
-                    // const totalPage = Math.ceil(total / page_size);
+                    const totalPage = Math.ceil(total / page_size);
                     res.status(200).json({
-                        listBook, 
-                        // totalPage,
+                        totalPage,
                         totalBook: total,
-                    })
-                })
-            })
-
+                        listBook,
+                    });
+                });
+            });
     } else {
-        const products = await Book.find({}).populate('cateId')
-            .sort({ createAt: -1 }).exec();
-        res.json(products);
+
     }
 }
 
-// export const totalBook = async (req, res) => {
-//     const total = await Book.find().populate('cateId');
-//     if(!total) {
-//         return res.status(400).json({
-//             status: false,
-//             message: "Không tìm thấy sách"
-//         });
-//     }
-//     res.status(200).json({
-//         status: true,
-//         message: "Lấy danh sách sản phẩm thành công",
-//         total,
-//     });
-// }
+
+
 
 export const bookById = (req, res, next, id) => {
     Book.findById(id).exec((err, book) => {
