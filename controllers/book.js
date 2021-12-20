@@ -143,7 +143,7 @@ export const searchProduct = (req, res) => {
                 Book.countDocuments({}).then((total) => {
                     const totalPage = Math.ceil(total / page_size);
                     res.status(200).json({
-                        totalPage,
+                        // totalPage,
                         searchProduct
                     })
                 })

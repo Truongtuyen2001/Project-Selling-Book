@@ -4,15 +4,15 @@ import { addWish, wishById, listWish, updateWishLike, removeWishList } from '../
 const wishRouter = express.Router();
 
 // add wishlist
-wishRouter.post('/saveWishList', addWish);
+wishRouter.post('/wishList', addWish);
 // danh sách ưu thích
 wishRouter.get('/wishList', listWish);
 // cập nhật yêu thích
-wishRouter.patch('/update/wishList', updateWishLike);
+wishRouter.patch('/wishList', updateWishLike);
 // lấy id chung
 wishRouter.param('idWishList', wishById);
 // xoá sản phẩm ưu thích
-wishRouter.delete('/deleteWishList/:idWishList', removeWishList);
+wishRouter.delete('/wishList/:idWishList', removeWishList);
 
 
 module.exports = wishRouter;
