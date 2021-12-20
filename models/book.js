@@ -47,8 +47,6 @@ const bookSchema = mongoose.Schema({
 }, { timestamps: true });
 
 
-
-// Book.plugin(mongoosePaginate);
 const Book = mongoose.model("Book", bookSchema);
 module.exports = Book
 

@@ -24,44 +24,8 @@ export const addBook = (req, res) => {
 }
 
 export const listBook = async (req, res) => {
-    // const sortBy = {};
-    // const { page, limit, sort } = req.query;
-    // if (page && limit) {
-    //     const myCustomTables = {
-    //         totalDocs: "itemCount",
-    //         docs: "books",
-    //         limit: "perPage",
-    //         page: "currentPage",
-    //         nextPage: "next",
-    //         prevPage: "prev",
-    //         totalPages: "pageCount",
-    //         pagingCounter: "slNo",
-    //         meta: "paginator",
-    //     };
-    //     const options = {
-
-    //         page: page || 1,
-    //         limit: limit || 5,
-    //         customLabels: myCustomTables,
-    //         collation: {
-    //             locale: 'en',
-    //         },
-    //     };
-
-    //     Book.paginate({}, options, function (err, db) {
-    //         if (err) throw err;
-    //         else res.json(db.books);
-    //         console.log(`page: ${page}, limit: ${limit}`);
-    //     });
-    // } 
-
     let page = req.query.page;
     const page_size = 12;
-
-    // const products = await Book.find({}).populate('cateId')
-    //     .sort({ createAt: -1 }).exec();
-    // res.json(products);
-    
     if (page) {
         page = parseInt(page);
         if (page < 1) {
@@ -93,9 +57,6 @@ export const listBook = async (req, res) => {
 
     }
 }
-
-
-
 
 export const bookById = (req, res, next, id) => {
     Book.findById(id).exec((err, book) => {
@@ -158,16 +119,38 @@ export const listRelated = (req, res) => {
 
 // tìm kiếm sản phẩm theo name
 export const searchProduct = (req, res) => {
+    let page = req.query.page;
     const searchProduct = req.query.name;
-    Book.find({ name: { $regex: searchProduct, $options: "i" } }).exec((err, book) => {
-        if (err || !book) {
-            return res.status(400).json({
-                success: false,
-                message: "Lỗi vcl",
-            });
+    const page_size = 12;
+    if (page) {
+        page = parseInt(page);
+        if (page < 1) {
+            page = 1;
         }
-        return res.status(200).json(book);
-    });
+        const qtySkip = (page - 1) * page_size;
+        Book.find({ name: { $regex: searchProduct, $options: "i" }})
+            .populate('cateId')
+            .sort({ createAt: -1 })
+            .skip(qtySkip)
+            .limit(page_size)
+            .exec((err, searchProduct) => {
+                if (err) {
+                    return res.status(400).json({
+                        success: false,
+                        error: "Error"
+                    });
+                }
+                Book.countDocuments({}).then((total) => {
+                    const totalPage = Math.ceil(total / page_size);
+                    res.status(200).json({
+                        totalPage,
+                        searchProduct
+                    })
+                })
+            })
+    } else {
+
+    }
 };
 
 
