@@ -33,7 +33,6 @@ export const addWish = (req, res) => {
             return res.json(wish);
         })
     }
-
 }
 
 export const listWish = (req, res) => {
@@ -65,14 +64,25 @@ export const updateWishLike = (req, res) => {
 
 // delete 
 export const removeWishList = (req, res) => {
-    let wish = req.wish;
-    wish.remove((err, wish) => {
+    // let wish = req.wish;
+    // wish.remove((err, wish) => {
+    //     if (err) {
+    //         return res.status(400).json({
+    //             status: false,
+    //             error: "Không thể xoá sản phẩm ưa thích"
+    //         })
+    //     }
+    //     return res.json(wish);
+    // })
+    let wishlist = req.wish;
+    wishlist.delete((err, data) => {
         if (err) {
             return res.status(400).json({
                 status: false,
-                error: "Không thể xoá sản phẩm ưa thích"
-            })
-        }
-        return res.json(wish);
+                err: "Không thể xoá được sản phẩm"
+            });
+        };
+        return res.json(data)
     })
+
 }

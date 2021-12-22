@@ -11,10 +11,10 @@ const WishListSchema = new mongoose.Schema({
         ref: "Book",
         required: true
     },
-    Wish: {
-        type: String,
-        required: true
-    }
+    // Wish: {
+    //     type: String,
+    //     required: true
+    // }
 })
 const Wishlist = new mongoose.model('Wishlist', WishListSchema);
 module.exports = Wishlist;
