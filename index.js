@@ -11,9 +11,8 @@ import authRouters from './routers/auth';
 import userRouters from './routers/user';
 import orderRouter from './routers/order';
 import cartRouters from './routers/cart';
-import mailRouters from './routers/mail';
 import wishList from './routers/wishList';
-import couponRouter from './routers/couponRouters';
+import couponRouter from './routers/coupon';
 //config
 
 const app = express();
@@ -48,8 +47,7 @@ app.use('/api', authRouters);
 app.use('/api', userRouters);
 app.use('/api', orderRouter);
 app.use('/api', cartRouters);
-app.use('/api', mailRouters);
-app.use('/api', couponRouter)
+app.use('/api', couponRouter);
 app.use('/api', wishList);
 
 const port = process.env.PORT || 8080

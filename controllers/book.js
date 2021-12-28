@@ -98,7 +98,7 @@ export const removeBook = (req, res) => {
             });
         };
         return res.json(book)
-    })
+    });
 }
 
 // sản phẩm liên quan
@@ -111,7 +111,7 @@ export const listRelated = (req, res) => {
             return res.status(400).json({
                 status: false,
                 error: "Không tìm thấy sản phẩm nào"
-            })
+            });
         }
         res.status(200).json(data)
     })

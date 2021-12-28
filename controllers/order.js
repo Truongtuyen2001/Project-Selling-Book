@@ -22,22 +22,18 @@ export const addOrder = (req, res) => {
         if (err) {
             return res.status(400).json({
                 error: " Không thể mua hàng"
-            })
+            });
         }
         return res.json(data)
     })
 }
 
-export const listOrder = (req, res) => {
-    Order.find((err, order) => {
-        if (err) {
-            return res.status(403).json({
-                status: false,
-                error: "Lỗi vkl"
-            })
-        }
-        return res.status(200).json(order)
-    })
+export const listOrder = async(req, res) => {
+
+    const order = await Order.find({})
+        .populate('arrOrder')
+        .sort({ createAt: -1 }).exec();
+    res.json(order);
 }
 
 export const detailOrder = (req, res) => {
